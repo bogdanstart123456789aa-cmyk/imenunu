@@ -9,7 +9,6 @@
 /* CSS Reset and Base Styles */
 *{margin:0;padding:0;box-sizing:border-box;}
 body{
-  /* Градієнт, більш святковий */
   background:linear-gradient(135deg,#fff0f8,#fff5f9,#f8e8ff,#e3f2fd);
   font-family:'Comfortaa',cursive;
   min-height:100vh;
@@ -24,10 +23,11 @@ body{
   background:rgba(255,255,255,0.98);
   border-radius:35px;overflow:hidden;
   box-shadow:0 30px 90px rgba(255,107,157,0.25);
-  position:relative;z-index:10;
+  position:relative;
+  z-index:10; /* Піднято, щоб бути над падаючими сердечками, але під конфетті */
 }
 
-/* Tab Links */
+/* Tab Links (без змін) */
 .tab-links{
   display:flex;flex-wrap:wrap;
   background:linear-gradient(135deg,#ff99cc,#ff6b9d,#ff8dc7);
@@ -35,7 +35,7 @@ body{
 .tab-links button{
   flex:1;padding:20px;border:none;background:none;
   font-size:1.2rem;color:white;cursor:pointer;transition:0.3s;
-  min-width:120px; /* Для кращого вигляду на мобільних */
+  min-width:120px;
 }
 .tab-links button:hover,
 .tab-links button.active{
@@ -43,7 +43,7 @@ body{
   transform:scale(1.05);
 }
 
-/* Tab Content */
+/* Tab Content (без змін) */
 .tab-content{
   padding:50px 40px;min-height:70vh;display:none;
   animation:fade 0.9s;
@@ -51,7 +51,7 @@ body{
 .tab-content.active{display:block;}
 @keyframes fade{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:none;}}
 
-/* Typography/Headers */
+/* Typography/Headers (без змін) */
 h1{
   font-family:'Dancing Script',cursive;font-size:5.8rem;text-align:center;
   color:#ff6b9d;margin:30px 0;
@@ -59,36 +59,15 @@ h1{
   animation:glow 3s infinite alternate;
 }
 @keyframes glow{from{text-shadow:0 0 30px rgba(255,107,157,0.5);}to{text-shadow:0 0 45px rgba(255,107,157,0.7);}}
-
 .cake{font-size:7rem;animation:bounce 2s infinite;text-align:center;margin:20px;}
 @keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-20px);}}
 
-/* Photo Grid */
-.photo-grid{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:25px;margin:40px 0;
-}
-.photo-grid figure{
-  position:relative;overflow:hidden;border-radius:30px;
-  box-shadow:0 15px 40px rgba(255,107,157,0.3);transition:0.4s;
-  cursor:pointer;
-}
-.photo-grid figure:hover{transform:scale(1.05);}
-.photo-grid img{width:100%;border-radius:30px;display:block;height:100%;object-fit:cover;}
-.photo-grid figcaption{
-  position:absolute;bottom:0;left:0;right:0;
-  background:rgba(255,105,180,0.9);color:white;padding:20px;
-  font-size:1.3rem;text-align:center;transform:translateY(100%);transition:0.4s;
-}
-.photo-grid figure:hover figcaption{transform:translateY(0);}
-
-/* Letter Style */
+/* Photo Grid/Letter (без змін) */
 .letter{
   background:#fff9f5;padding:45px;border-radius:35px;
   border:6px dashed #ffb3d9;max-width:820px;margin:40px auto;
   line-height:2.2;font-size:1.45rem;
 }
-
-/* Surprise Button */
 button.surprise{
   background:#ff6b9d;color:white;border:none;padding:22px 60px;
   font-size:1.7rem;border-radius:50px;cursor:pointer;
@@ -98,13 +77,7 @@ button.surprise{
 }
 button.surprise:hover{transform:scale(1.15);}
 
-/* Reason/Wish Text */
-#reason-text,#wish-text{
-  font-size:2.2rem;text-align:center;min-height:120px;padding:30px;color:#ff6b9d;
-  transition:0.5s;
-}
-
-/* Music Toggle */
+/* Music Toggle (без змін) */
 .music-toggle{
   position:fixed;bottom:30px;right:30px;
   background:#ff6b9d;color:white;padding:18px 22px;
@@ -119,15 +92,26 @@ button.surprise:hover{transform:scale(1.15);}
   position:fixed;
   font-size:2.8rem;
   pointer-events:none;
-  z-index:3;
+  z-index:5; /* Піднято Z-index */
   opacity:0.85;
+  top: -50px; /* Виправлено: починається вище верхнього краю */
   animation:fall linear forwards;
 }
 @keyframes fall {
   to { transform:translateY(110vh) rotate(720deg); opacity:0; }
 }
 
-/* Media Query для менших екранів */
+/* Canvas Styling for Heart */
+#heartCanvas {
+    display: block;
+    margin: 40px auto;
+    border: 4px solid #ff6b9d;
+    border-radius: 20px;
+    background: #fff;
+    box-shadow: 0 10px 30px rgba(255, 107, 157, 0.2);
+}
+
+/* Media Query (без змін) */
 @media (max-width: 600px) {
     h1 { font-size: 3.5rem; margin: 20px 0; }
     .tab-content { padding: 30px 20px; }
@@ -152,7 +136,7 @@ button.surprise:hover{transform:scale(1.15);}
     <button onclick="openTab(event,'photos')">Вікуся — принцеса 👑</button>
     <button onclick="openTab(event,'reasons')">12 причин ❤️</button>
     <button onclick="openTab(event,'wishes')">Побажання ✨</button>
-    <button onclick="openTab(event,'surprise')">Сюрприз 🎁</button>
+    <button onclick="openTab(event,'heart-drawing')">Сердечко ❤️</button> <button onclick="openTab(event,'surprise')">Сюрприз 🎁</button>
   </div>
 
   <div id="home" class="tab-content active">
@@ -190,14 +174,21 @@ button.surprise:hover{transform:scale(1.15);}
 
   <div id="reasons" class="tab-content">
     <h1>12 причин чому ти найкраща на світі</h1>
-    <p id="reason-text">Натисни кнопку ↓</p>
+    <p id="reason-text" style="transition: color 0.5s;">Натисни кнопку ↓</p>
     <button class="surprise" onclick="newReason()">Показати причину ❤️</button>
   </div>
 
   <div id="wishes" class="tab-content">
     <h1>Особливі побажання тільки тобі 🐱</h1>
-    <p id="wish-text">Натисни кнопку ↓</p>
+    <p id="wish-text" style="transition: color 0.5s;">Натисни кнопку ↓</p>
     <button class="surprise" onclick="newWish()">Нове побажання ⭐</button>
+  </div>
+
+  <div id="heart-drawing" class="tab-content">
+    <h1>Малюнок від чистого серця 💖</h1>
+    <p style="text-align:center;font-size:1.5rem;margin:20px;">Подивись, як б'ється моє серце для тебе!</p>
+    <canvas id="heartCanvas" width="400" height="400"></canvas>
+    <button class="surprise" onclick="drawHeart()">Намалювати сердечко ✨</button>
   </div>
 
   <div id="surprise" class="tab-content">
@@ -225,7 +216,7 @@ const reasons = [
   "Тому що я пишаюсь тобою кожну секунду",
   "Тому що люблю тебе більше за все на світі ❤️"
 ];
-let reasonIndex = 0; // Змінив ri на reasonIndex
+let reasonIndex = 0;
 
 const wishes = [
   "Щоб ти завжди прокидалась з посмішкою",
@@ -243,15 +234,12 @@ const audio = document.getElementById('voice');
 const toggleBtn = document.querySelector('.music-toggle');
 let isPlaying = false;
 
-// Автозапуск з таймаутом для обходу обмежень браузерів
 setTimeout(() => {
   audio.play().then(() => {
     isPlaying = true;
     toggleBtn.innerHTML = '🔊';
   }).catch(() => {
-    // Якщо автоплей не вдався, залишаємо заглушений значок
     toggleBtn.innerHTML = '🔇';
-    console.log("Автоматичне відтворення заблоковано. Натисніть кнопку.");
   });
 }, 800);
 
@@ -272,12 +260,16 @@ function openTab(e, tabName) {
   document.querySelectorAll(".tab-links button").forEach(b => b.classList.remove("active"));
   document.getElementById(tabName).classList.add("active");
   e.currentTarget.classList.add("active");
+  
+  // Додаткова перевірка: якщо відкриваємо вкладку з малюванням, очистити canvas
+  if (tabName === 'heart-drawing') {
+    clearCanvas();
+  }
 }
 
 // ==================== ПРИЧИНИ ТА ПОБАЖАННЯ ====================
 function newReason() {
   const reasonTextElement = document.getElementById("reason-text");
-  // Показ нової причини та перехід до наступної
   reasonTextElement.innerHTML = reasons[reasonIndex % reasons.length];
   reasonIndex++;
 }
@@ -292,7 +284,9 @@ function bigSurprise() {
   // Налаштування для конфетті
   const duration = 5.5 * 1000;
   const animationEnd = Date.now() + duration;
-  const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 999 };
+  
+  // Збільшено zIndex до 1000, щоб гарантовано бути над усім
+  const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 1000 }; 
 
   function randomInRange(min, max) {
     return Math.random() * (max - min) + min;
@@ -303,13 +297,13 @@ function bigSurprise() {
     const timeLeft = animationEnd - Date.now();
     if (timeLeft <= 0) return clearInterval(interval);
 
-    const particleCount = 40 * (timeLeft / duration); // Зменшення кількості з часом
+    const particleCount = 40 * (timeLeft / duration);
     
     // Лівий бік
     confetti(Object.assign({}, defaults, {
       particleCount,
       origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
-      colors: ['#ffb3d9', '#ff6b9d', '#ffffff'] // Рожеві, білі
+      colors: ['#ffb3d9', '#ff6b9d', '#ffffff'] 
     }));
 
     // Правий бік
@@ -325,7 +319,8 @@ function bigSurprise() {
     particleCount: 400,
     spread: 120,
     origin: { y: 0.6 },
-    colors: ['#ff6b9d', '#ffd1e0', '#f8e8ff', '#ffffff']
+    colors: ['#ff6b9d', '#ffd1e0', '#f8e8ff', '#ffffff'],
+    zIndex: 1000 // Також встановлюємо zIndex
   });
 
   // Змінюємо текст
@@ -334,26 +329,77 @@ function bigSurprise() {
     "З іменинами, моя найкраща, найніжніша, найчарівніша Вікуся!<br><br>Люблю тебе безмежно і назавжди!<br>Твій Бодька 🐱💕";
 }
 
+// ==================== МАЛЮВАННЯ СЕРДЕЧКА (CANVAS) ====================
+
+const canvas = document.getElementById('heartCanvas');
+const ctx = canvas.getContext('2d');
+const size = 400; // Розмір canvas
+
+function clearCanvas() {
+    ctx.clearRect(0, 0, size, size);
+}
+
+function drawHeart() {
+  clearCanvas(); // Очищаємо перед малюванням
+  
+  const w = size;
+  const h = size;
+  const scale = w / 4.5;
+  
+  ctx.beginPath();
+  // Початкова точка
+  ctx.moveTo(w / 2, h / 4 + scale * 0.1); 
+
+  // Ліва крива (Верхній вигин)
+  ctx.bezierCurveTo(
+    w / 2 - scale * 0.5, h / 4 - scale * 0.7, // Контрольна точка 1
+    w / 2 - scale * 1.5, h / 4 + scale * 0.3, // Контрольна точка 2
+    w / 2, h / 4 + scale * 1.5 // Нижня точка (верхівка)
+  );
+
+  // Права крива (Нижній вигин)
+  ctx.bezierCurveTo(
+    w / 2 + scale * 1.5, h / 4 + scale * 0.3, // Контрольна точка 3
+    w / 2 + scale * 0.5, h / 4 - scale * 0.7, // Контрольна точка 4
+    w / 2, h / 4 + scale * 0.1 // Повернення до початкової точки
+  );
+  
+  ctx.closePath();
+  ctx.fillStyle = '#ff6b9d'; // Рожевий колір
+  ctx.fill();
+  
+  // Додаємо контур
+  ctx.strokeStyle = '#e30b5c';
+  ctx.lineWidth = 5;
+  ctx.stroke();
+
+  // Додаємо блиск/текст
+  ctx.fillStyle = 'white';
+  ctx.font = 'bold 24px Comfortaa';
+  ctx.textAlign = 'center';
+  ctx.fillText('Для Вікусі', w / 2, h / 2);
+}
+
 // ==================== ПАДАЮЧІ ЕМОДЗІ ====================
-// Додав більше різноманітних емодзі
 const fallingEmojis = ['❤️','💖','💕','💗','🌸','🐱','✨','🌼','🎀','🥰','🌷', '🌟', '👑', '💫'];
 
 function createFallingHeart() {
   const heart = document.createElement('div');
   heart.classList.add('falling');
-  // Випадковий емодзі
   heart.innerHTML = fallingEmojis[Math.floor(Math.random() * fallingEmojis.length)];
   
   // Випадкові параметри
-  heart.style.left = Math.random() * 100 + 'vw'; // Позиція по ширині
-  heart.style.animationDuration = Math.random() * 4 + 5 + 's'; // Тривалість падіння (5-9с)
-  heart.style.animationDelay = Math.random() * 2 + 's'; // Затримка початку
-  heart.style.fontSize = Math.random() * 30 + 30 + 'px'; // Розмір (30-60px)
-  heart.style.opacity = Math.random() * 0.4 + 0.6; // Прозорість
+  heart.style.left = Math.random() * 100 + 'vw';
+  heart.style.animationDuration = Math.random() * 4 + 5 + 's';
+  heart.style.animationDelay = Math.random() * 2 + 's';
+  heart.style.fontSize = Math.random() * 30 + 30 + 'px';
+  heart.style.opacity = Math.random() * 0.4 + 0.6;
+  
+  // Виправлено: додаємо top: -50px у CSS, щоб починалось вище
+  // heart.style.top = '-50px'; // Не потрібно, вже є в CSS
 
   document.body.appendChild(heart);
 
-  // Прибираємо елемент після завершення анімації
   setTimeout(() => heart.remove(), 10000); 
 }
 
@@ -366,9 +412,10 @@ setTimeout(() => {
     particleCount: 300,
     spread: 100,
     origin: { y: 0.6 },
-    colors: ['#ff6b9d', '#ffb3d9', '#ffffff']
+    colors: ['#ff6b9d', '#ffb3d9', '#ffffff'],
+    zIndex: 1000 // Також встановлюємо zIndex
   });
-}, 1200); // Салют через 1.2 секунди після завантаження
+}, 1200);
 </script>
 </body>
 </html>
