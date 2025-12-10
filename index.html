@@ -5,11 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>З іменинами, Вікуся! 🐱🌸</title>
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap" rel="stylesheet">
+
 <style>
 /* CSS Reset and Base Styles */
 *{margin:0;padding:0;box-sizing:border-box;}
 body{
-  background:linear-gradient(135deg,#fff0f8,#fff5f9,#f8e8ff,#e3f2fd);
+  /* НОВИЙ НІЖНИЙ ФОН */
+  background:linear-gradient(135deg,#fcfcfc,#fff0f8,#f8e8ff);
   font-family:'Comfortaa',cursive;
   min-height:100vh;
   color:#444;
@@ -22,14 +25,14 @@ body{
   max-width:960px;margin:30px auto;
   background:rgba(255,255,255,0.98);
   border-radius:35px;overflow:hidden;
-  box-shadow:0 30px 90px rgba(255,107,157,0.25);
+  /* НОВЕ НЕОНОВЕ СВІЧЕННЯ */
+  box-shadow:0 10px 60px rgba(255, 107, 157, 0.4), 0 0 20px rgba(255, 150, 200, 0.7);
   position:relative;
   z-index:10;
 }
 
-/* Tab Links */
+/* Tab Links (зміни для переливання) */
 .tab-links{
-  display:flex;flex-wrap:wrap;
   background:linear-gradient(135deg,#ff99cc,#ff6b9d,#ff8dc7);
 }
 .tab-links button{
@@ -39,15 +42,13 @@ body{
 }
 .tab-links button:hover,
 .tab-links button.active{
-  background:rgba(255,255,255,0.25);
+  /* Ефект переливання */
+  background:rgba(255,255,255,0.35);
   transform:scale(1.05);
 }
 
-/* Tab Content */
-.tab-content{
-  padding:50px 40px;min-height:70vh;display:none;
-  animation:fade 0.9s;
-}
+/* Tab Content / Animations (без змін) */
+.tab-content{padding:50px 40px;min-height:70vh;display:none;animation:fade 0.9s;}
 .tab-content.active{display:block;}
 @keyframes fade{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:none;}}
 
@@ -55,72 +56,54 @@ body{
 h1{
   font-family:'Dancing Script',cursive;font-size:5.8rem;text-align:center;
   color:#ff6b9d;margin:30px 0;
-  text-shadow:0 0 30px rgba(255,107,157,0.5);
-  animation:glow 3s infinite alternate;
+  /* ЕФЕКТ НЕОНОВОГО ТЕКСТУ */
+  text-shadow:0 0 15px #ffb3d9, 0 0 30px #ff6b9d;
+  animation:neon-glow 3s infinite alternate;
 }
-@keyframes glow{from{text-shadow:0 0 30px rgba(255,107,157,0.5);}to{text-shadow:0 0 45px rgba(255,107,157,0.7);}}
+@keyframes neon-glow{
+  from{text-shadow:0 0 15px #ffb3d9, 0 0 30px #ff6b9d;}
+  to{text-shadow:0 0 25px #ffd1e0, 0 0 50px #ff6b9d;}
+}
 .cake{font-size:7rem;animation:bounce 2s infinite;text-align:center;margin:20px;}
-@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-20px);}}
 
-/* Letter Style */
+/* Letter Style (Рукописний шрифт) */
 .letter{
   background:#fff9f5;padding:45px;border-radius:35px;
   border:6px dashed #ffb3d9;max-width:820px;margin:40px auto;
-  line-height:2.2;font-size:1.45rem;
+  font-family: 'Caveat', cursive; /* Рукописний шрифт */
+  font-size: 2.2rem;
+  line-height: 1.8;
+  background-image: url('https://i.imgur.com/G5ZkXgO.png'); /* Легкий малюнок */
+  background-repeat: no-repeat;
+  background-position: right top;
+  background-size: 150px;
 }
 
-/* Surprise Button */
+/* Surprise Button (тепер з неоновим світінням) */
 button.surprise{
   background:#ff6b9d;color:white;border:none;padding:22px 60px;
   font-size:1.7rem;border-radius:50px;cursor:pointer;
-  box-shadow:0 15px 45px rgba(255,107,157,0.5);transition:0.4s;
+  /* НЕОНОВА ТІНЬ */
+  box-shadow:0 10px 30px rgba(255,107,157,0.7), 0 0 15px #ffb3d9;
+  transition:0.4s;
   display:block;margin:40px auto;
   text-transform:uppercase;
 }
-button.surprise:hover{transform:scale(1.15);}
-
-/* Reason/Wish Text */
-#reason-text,#wish-text{
-  font-size:2.2rem;text-align:center;min-height:120px;padding:30px;color:#ff6b9d;
-  transition:0.5s;
+button.surprise:hover{
+  transform:scale(1.15);
+  box-shadow:0 15px 45px rgba(255,107,157,0.9), 0 0 30px #fff;
 }
 
-/* Music Toggle */
-.music-toggle{
-  position:fixed;bottom:30px;right:30px;
-  background:#ff6b9d;color:white;padding:18px 22px;
-  border-radius:50%;font-size:2rem;cursor:pointer;
-  box-shadow:0 10px 30px rgba(255,107,157,0.5);z-index:999;
-  transition:0.3s;
-}
-.music-toggle:hover{transform:scale(1.2);}
-
-/* Falling Hearts Style */
-.falling {
-  position:fixed;
-  font-size:2.8rem;
-  pointer-events:none;
-  z-index:5; 
-  opacity:0.85;
-  top: -50px; 
-  animation:fall linear forwards;
-}
-@keyframes fall {
-  to { transform:translateY(110vh) rotate(720deg); opacity:0; }
-}
-
-/* =========== МОДНА ФОТОГАЛЕРЕЯ =========== */
-.photo-grid{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:25px;margin:40px 0;
-}
+/* Photo Grid (з неоновими рамками) */
 .photo-grid figure{
   position:relative;overflow:hidden;
   border-radius:30px;
-  /* Градієнтна рамка (зовнішній ефект тіні) */
+  /* Градієнтна рамка */
   background: linear-gradient(145deg, #ffb3d9, #ff6b9d); 
-  padding: 5px; /* Товщина рамки */
-  box-shadow: 0 15px 40px rgba(255, 107, 157, 0.4), /* 3D Тінь */
-              0 0 15px rgba(255, 107, 157, 0.6); /* Легке свічення */
+  padding: 5px; 
+  /* Неонова Тінь */
+  box-shadow: 0 10px 30px rgba(255, 107, 157, 0.4), 
+              0 0 10px rgba(255, 107, 157, 0.8);
   transition: transform 0.4s, box-shadow 0.4s;
   cursor:pointer;
   height: 350px; 
@@ -128,88 +111,58 @@ button.surprise:hover{transform:scale(1.15);}
 .photo-grid figure:hover{
   transform:scale(1.05);
   /* Ефект підсвічування при наведенні */
-  box-shadow: 0 20px 60px rgba(255, 107, 157, 0.6), 
-              0 0 30px rgba(255, 107, 157, 0.9);
-}
-.photo-grid img{
-  width:100%;
-  height:100%;
-  border-radius:25px; /* Менший радіус для внутрішнього зображення */
-  display:block;
-  object-fit: cover; 
-}
-.photo-grid figcaption{
-  position:absolute;bottom:0;left:0;right:0;
-  background:rgba(255,105,180,0.9);color:white;padding:20px;
-  font-size:1.3rem;text-align:center;
-  transform:translateY(100%); 
-  transition:transform 0.4s ease-out;
-}
-.photo-grid figure:hover figcaption{transform:translateY(0);}
-
-/* =========== АНІМАЦІЯ SVG СЕРДЕЧКА =========== */
-#heart-svg-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 40px auto;
-    width: 400px;
-    height: 400px;
-    position: relative;
-}
-#heart-svg {
-    width: 100%;
-    height: 100%;
-}
-#heart-svg path {
-    fill: #ff6b9d;
-    stroke: #e30b5c;
-    stroke-width: 10px;
-    /* Налаштування для анімації малювання */
-    stroke-dasharray: 1000;
-    stroke-dashoffset: 1000;
-    animation: drawHeart 3s ease-in-out forwards;
-    animation-play-state: paused; /* Пауза до натискання кнопки */
+  box-shadow: 0 15px 45px rgba(255, 107, 157, 0.8), 
+              0 0 25px #fff;
 }
 
-@keyframes drawHeart {
-    to { stroke-dashoffset: 0; }
-}
+/* Falling Hearts (без змін) */
+.falling {position:fixed;font-size:2.8rem;pointer-events:none;z-index:5;opacity:0.85;top: -50px;animation:fall linear forwards;}
+@keyframes fall {to { transform:translateY(110vh) rotate(720deg); opacity:0; }}
 
-#heart-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-    font-size: 24px;
-    font-weight: bold;
-    opacity: 0;
-    transition: opacity 0.5s 2.5s; /* З'являється після малювання */
-    pointer-events: none;
-}
-.drawing-finished #heart-text {
-    opacity: 1;
-}
+/* SVG Heart Styles (без змін) */
+#heart-svg-container {display: flex;justify-content: center;align-items: center;margin: 40px auto;width: 400px;height: 400px;position: relative;}
+#heart-svg path {fill: #ff6b9d;stroke: #e30b5c;stroke-width: 10px;stroke-dasharray: 1000;stroke-dashoffset: 1000;animation: drawHeart 3s ease-in-out forwards;animation-play-state: paused;}
+@keyframes drawHeart {to { stroke-dashoffset: 0; }}
+#heart-text {position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);color: white;font-size: 24px;font-weight: bold;opacity: 0;transition: opacity 0.5s 2.5s;pointer-events: none;}
+.drawing-finished #heart-text {opacity: 1;}
 
-/* Media Query (без змін) */
-@media (max-width: 600px) {
-    h1 { font-size: 3.5rem; margin: 20px 0; }
-    .tab-content { padding: 30px 20px; }
-    .tab-links button { font-size: 1rem; padding: 15px 10px; }
-    .cake { font-size: 5rem; }
-    #heart-svg-container { width: 90%; height: 300px; }
+/* =========== ЕФЕКТ ВЕЛИЧЕЗНОГО ЦЬОМЧИКА =========== */
+#kiss-effect {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0); /* Початковий розмір: нуль */
+  font-size: 0; /* Початковий розмір тексту: нуль */
+  z-index: 1001; /* Над конфетті */
+  opacity: 0;
+  pointer-events: none;
+}
+.kiss-in {
+  animation: kiss-in 0.8s ease-out forwards;
+}
+.kiss-out {
+  animation: kiss-out 1s ease-in 0.8s forwards; /* Затримка 0.8с, щоб дати йому побути на екрані */
+}
+@keyframes kiss-in {
+  0% { transform: translate(-50%, -50%) scale(0.1); opacity: 0; font-size: 1rem; }
+  50% { transform: translate(-50%, -50%) scale(3); opacity: 1; font-size: 10rem; }
+  100% { transform: translate(-50%, -50%) scale(2.5); opacity: 1; font-size: 10rem; }
+}
+@keyframes kiss-out {
+  0% { transform: translate(-50%, -50%) scale(2.5); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(0.1); opacity: 0; }
 }
 </style>
 </head>
 <body>
 
 <div class="music-toggle" onclick="toggleAudio()">🔇</div>
-
 <audio id="voice" loop preload="auto">
   <source src="https://files.catbox.moe/uq7py8.m4a" type="audio/mp4">
   Ваш браузер не підтримує аудіо елемент.
 </audio>
+
+<div id="kiss-effect">💋</div>
 
 <div class="tabs">
   <div class="tab-links">
@@ -219,7 +172,7 @@ button.surprise:hover{transform:scale(1.15);}
     <button onclick="openTab(event,'reasons')">12 причин ❤️</button>
     <button onclick="openTab(event,'wishes')">Побажання ✨</button>
     <button onclick="openTab(event,'heart-drawing')">Сердечко ❤️</button>
-    <button onclick="openTab(event,'surprise')">Сюрприз 🎁</button>
+    <button onclick="openTab(event,'angel')">Ангел-Хранитель 😇</button> <button onclick="openTab(event,'surprise')">Сюрприз 🎁</button>
   </div>
 
   <div id="home" class="tab-content active">
@@ -227,6 +180,9 @@ button.surprise:hover{transform:scale(1.15);}
     <p class="cake">🎂🧁🎉</p>
     <p style="text-align:center;font-size:2.3rem;margin:40px 0;">
       Вітаююююю, моя найпрекрасніша дівчинка у світі! ❤️🐱✨
+      <span style="display: block; font-size: 1.5rem; color: #ff6b9d; margin-top: 15px;">
+        Твій Ангел поруч. Твій знак — Телець ♉
+      </span>
     </p>
   </div>
 
@@ -280,6 +236,23 @@ button.surprise:hover{transform:scale(1.15);}
     
     <button class="surprise" onclick="animateHeart()">Намалювати сердечко ✨</button>
   </div>
+  
+  <div id="angel" class="tab-content">
+    <h1 style="font-size: 4rem;">Послання від Ангела Вікусі ✨</h1>
+    <div id="angel-box" style="text-align: center; padding: 30px; border: 3px solid #ffb3d9; border-radius: 20px; max-width: 500px; margin: 40px auto; background: #fff;">
+      
+      <p id="angel-message-hidden" style="font-size: 1.6rem; color: #ff6b9d; display: none;">
+        **Ангел-Хранитель шепоче:**<br>
+        "Нехай твоє серце завжди знає, що я поруч. Я обіцяю бути твоєю опорою, твоїм захистом і твоїм найвідданішим коханням у будь-який день іменин і після нього!"
+      </p>
+
+      <p id="angel-image" style="font-size: 6rem; margin: 20px 0;">
+        👼💖
+      </p>
+
+      <button class="surprise" onclick="revealAngelMessage()">Розкрити послання 🗝️</button>
+    </div>
+  </div>
 
   <div id="surprise" class="tab-content">
     <h1>Готова до найбільшого сюрпризу?</h1>
@@ -291,7 +264,7 @@ button.surprise:hover{transform:scale(1.15);}
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 
 <script>
-// ==================== МАСИВИ ДАНИХ ====================
+// ==================== МАСИВИ ДАНИХ (без змін) ====================
 const reasons = [
   "Тому що твоя посмішка робить мій день ідеальним",
   "Тому що ти завжди знаєш, як мене розсмішити",
@@ -307,7 +280,6 @@ const reasons = [
   "Тому що люблю тебе більше за все на світі ❤️"
 ];
 let reasonIndex = 0; 
-
 const wishes = [
   "Щоб ти завжди прокидалась з посмішкою",
   "Нехай твої улюблені солодощі ніколи не закінчуються",
@@ -351,7 +323,7 @@ function openTab(e, tabName) {
   e.currentTarget.classList.add("active");
   
   if (tabName === 'heart-drawing') {
-    resetHeartAnimation(); // Скидаємо анімацію при відкритті вкладки
+    resetHeartAnimation();
   }
 }
 
@@ -366,15 +338,48 @@ function newWish() {
   document.getElementById("wish-text").innerHTML = `"${w}"`;
 }
 
-// ==================== МЕГА-СЮРПРИЗ (КОНФЕТТІ) ====================
+// ==================== АНГЕЛ-ХРАНИТЕЛЬ (НОВА ФУНКЦІЯ) ====================
+function revealAngelMessage() {
+  const box = document.getElementById('angel-box');
+  const hiddenMessage = document.getElementById('angel-message-hidden');
+  const angelImage = document.getElementById('angel-image');
+  const button = box.querySelector('.surprise');
+
+  angelImage.style.display = 'none';
+  button.style.display = 'none';
+
+  hiddenMessage.style.display = 'block';
+  box.style.background = 'linear-gradient(135deg, #fff0f8, #e3f2fd)';
+  box.style.boxShadow = '0 0 50px rgba(100, 150, 255, 0.5)';
+  
+  confetti({
+    particleCount: 150,
+    spread: 120,
+    origin: { y: 0.6 },
+    colors: ['#a8c0ff', '#85a3e0', '#ffffff'],
+    zIndex: 1000 
+  });
+}
+
+// ==================== МЕГА-СЮРПРИЗ (З ЦЬОМЧИКОМ) ====================
 function bigSurprise() {
+  // 1. Анімація Цьомчика
+  const kiss = document.getElementById('kiss-effect');
+  kiss.classList.remove('kiss-out'); // Скидаємо, якщо була
+  kiss.classList.add('kiss-in');
+  
+  // Додаємо клас для зникнення після завершення анімації
+  setTimeout(() => {
+    kiss.classList.remove('kiss-in');
+    kiss.classList.add('kiss-out');
+  }, 1600); // Цьомчик показується ~1.6с
+
+  // 2. Анімація Конфетті (без змін)
   const duration = 5.5 * 1000;
   const animationEnd = Date.now() + duration;
   const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 1000 }; 
 
-  function randomInRange(min, max) {
-    return Math.random() * (max - min) + min;
-  }
+  function randomInRange(min, max) { return Math.random() * (max - min) + min; }
 
   const interval = setInterval(function() {
     const timeLeft = animationEnd - Date.now();
@@ -403,34 +408,30 @@ function bigSurprise() {
     zIndex: 1000 
   });
 
+  // 3. Змінюємо текст
   document.querySelector("#surprise h1").innerHTML = "ВІТАЮЮЮЮЮЮЮЮЮ!!! 🎉❤️✨";
   document.querySelector("#surprise p").innerHTML = 
     "З іменинами, моя найкраща, найніжніша, найчарівніша Вікуся!<br><br>Люблю тебе безмежно і назавжди!<br>Твій Бодька 🐱💕";
 }
 
-// ==================== АНІМАЦІЯ СЕРДЕЧКА (SVG) ====================
+// ==================== АНІМАЦІЯ СЕРДЕЧКА / ПАДАЮЧІ ЕМОДЗІ (без змін) ====================
 const heartPath = document.querySelector('#heart-svg path');
 
 function resetHeartAnimation() {
-    // Скидаємо SVG до початкового стану
     heartPath.style.animation = 'none';
-    heartPath.offsetHeight; // Викликаємо reflow для скидання
+    heartPath.offsetHeight;
     heartPath.style.animation = null;
     heartPath.style.strokeDashoffset = 1000;
     document.getElementById('heart-svg-container').classList.remove('drawing-finished');
 }
 
 function animateHeart() {
-    // Запускаємо анімацію малювання
     heartPath.style.animation = 'drawHeart 3s ease-in-out forwards';
-    
-    // Додаємо клас після завершення (через 3 секунди), щоб показати текст
     setTimeout(() => {
         document.getElementById('heart-svg-container').classList.add('drawing-finished');
     }, 3000);
 }
 
-// ==================== ПАДАЮЧІ ЕМОДЗІ (ПРИСКОРЕНО) ====================
 const fallingEmojis = ['❤️','💖','💕','💗','🌸','🐱','✨','🌼','🎀','🥰','🌷', '🌟', '👑', '💫'];
 
 function createFallingHeart() {
@@ -448,10 +449,8 @@ function createFallingHeart() {
   setTimeout(() => heart.remove(), 10000); 
 }
 
-// Запускаємо кожні 200мс
 setInterval(createFallingHeart, 200);
 
-// ==================== ПРИВІТАЛЬНЕ КОНФЕТТІ ====================
 setTimeout(() => {
   confetti({
     particleCount: 300,
