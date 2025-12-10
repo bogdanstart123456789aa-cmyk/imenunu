@@ -62,33 +62,6 @@ h1{
 .cake{font-size:7rem;animation:bounce 2s infinite;text-align:center;margin:20px;}
 @keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-20px);}}
 
-/* Photo Grid */
-.photo-grid{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:25px;margin:40px 0;
-}
-.photo-grid figure{
-  position:relative;overflow:hidden;border-radius:30px;
-  box-shadow:0 15px 40px rgba(255,107,157,0.3);transition:0.4s;
-  cursor:pointer;
-  height: 350px; /* Фіксована висота */
-}
-.photo-grid figure:hover{transform:scale(1.05);}
-.photo-grid img{
-  width:100%;
-  height:100%;
-  border-radius:30px;
-  display:block;
-  object-fit: cover; /* Обрізка фотографії */
-}
-.photo-grid figcaption{
-  position:absolute;bottom:0;left:0;right:0;
-  background:rgba(255,105,180,0.9);color:white;padding:20px;
-  font-size:1.3rem;text-align:center;
-  transform:translateY(100%); 
-  transition:transform 0.4s ease-out;
-}
-.photo-grid figure:hover figcaption{transform:translateY(0);}
-
 /* Letter Style */
 .letter{
   background:#fff9f5;padding:45px;border-radius:35px;
@@ -136,16 +109,87 @@ button.surprise:hover{transform:scale(1.15);}
   to { transform:translateY(110vh) rotate(720deg); opacity:0; }
 }
 
-/* Canvas Styling for Heart */
-#heartCanvas {
-    display: block;
+/* =========== МОДНА ФОТОГАЛЕРЕЯ =========== */
+.photo-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:25px;margin:40px 0;
+}
+.photo-grid figure{
+  position:relative;overflow:hidden;
+  border-radius:30px;
+  /* Градієнтна рамка (зовнішній ефект тіні) */
+  background: linear-gradient(145deg, #ffb3d9, #ff6b9d); 
+  padding: 5px; /* Товщина рамки */
+  box-shadow: 0 15px 40px rgba(255, 107, 157, 0.4), /* 3D Тінь */
+              0 0 15px rgba(255, 107, 157, 0.6); /* Легке свічення */
+  transition: transform 0.4s, box-shadow 0.4s;
+  cursor:pointer;
+  height: 350px; 
+}
+.photo-grid figure:hover{
+  transform:scale(1.05);
+  /* Ефект підсвічування при наведенні */
+  box-shadow: 0 20px 60px rgba(255, 107, 157, 0.6), 
+              0 0 30px rgba(255, 107, 157, 0.9);
+}
+.photo-grid img{
+  width:100%;
+  height:100%;
+  border-radius:25px; /* Менший радіус для внутрішнього зображення */
+  display:block;
+  object-fit: cover; 
+}
+.photo-grid figcaption{
+  position:absolute;bottom:0;left:0;right:0;
+  background:rgba(255,105,180,0.9);color:white;padding:20px;
+  font-size:1.3rem;text-align:center;
+  transform:translateY(100%); 
+  transition:transform 0.4s ease-out;
+}
+.photo-grid figure:hover figcaption{transform:translateY(0);}
+
+/* =========== АНІМАЦІЯ SVG СЕРДЕЧКА =========== */
+#heart-svg-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin: 40px auto;
-    border: 4px solid #ff6b9d;
-    border-radius: 20px;
-    background: #fff;
-    box-shadow: 0 10px 30px rgba(255, 107, 157, 0.2);
-    z-index: 12; 
+    width: 400px;
+    height: 400px;
     position: relative;
+}
+#heart-svg {
+    width: 100%;
+    height: 100%;
+}
+#heart-svg path {
+    fill: #ff6b9d;
+    stroke: #e30b5c;
+    stroke-width: 10px;
+    /* Налаштування для анімації малювання */
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation: drawHeart 3s ease-in-out forwards;
+    animation-play-state: paused; /* Пауза до натискання кнопки */
+}
+
+@keyframes drawHeart {
+    to { stroke-dashoffset: 0; }
+}
+
+#heart-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.5s 2.5s; /* З'являється після малювання */
+    pointer-events: none;
+}
+.drawing-finished #heart-text {
+    opacity: 1;
 }
 
 /* Media Query (без змін) */
@@ -154,6 +198,7 @@ button.surprise:hover{transform:scale(1.15);}
     .tab-content { padding: 30px 20px; }
     .tab-links button { font-size: 1rem; padding: 15px 10px; }
     .cake { font-size: 5rem; }
+    #heart-svg-container { width: 90%; height: 300px; }
 }
 </style>
 </head>
@@ -225,8 +270,15 @@ button.surprise:hover{transform:scale(1.15);}
   <div id="heart-drawing" class="tab-content">
     <h1>Малюнок від чистого серця 💖</h1>
     <p style="text-align:center;font-size:1.5rem;margin:20px;">Подивись, як б'ється моє серце для тебе!</p>
-    <canvas id="heartCanvas" width="400" height="400"></canvas>
-    <button class="surprise" onclick="drawHeart()">Намалювати сердечко ✨</button>
+    
+    <div id="heart-svg-container">
+        <svg id="heart-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50 88.85C-10 63.85, 20 20, 50 40C80 20, 110 63.85, 50 88.85Z" />
+        </svg>
+        <div id="heart-text">ДЛЯ Вікусі</div>
+    </div>
+    
+    <button class="surprise" onclick="animateHeart()">Намалювати сердечко ✨</button>
   </div>
 
   <div id="surprise" class="tab-content">
@@ -267,7 +319,7 @@ const wishes = [
   "Назавжди твоя любов і підтримка — Бодька ❤️"
 ];
 
-// ==================== МУЗИКА ====================
+// ==================== МУЗИКА / ВКЛАДКИ / ПРИЧИНИ (без змін) ====================
 const audio = document.getElementById('voice');
 const toggleBtn = document.querySelector('.music-toggle');
 let isPlaying = false;
@@ -292,7 +344,6 @@ function toggleAudio() {
   isPlaying = !isPlaying;
 }
 
-// ==================== ВКЛАДКИ ====================
 function openTab(e, tabName) {
   document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
   document.querySelectorAll(".tab-links button").forEach(b => b.classList.remove("active"));
@@ -300,11 +351,10 @@ function openTab(e, tabName) {
   e.currentTarget.classList.add("active");
   
   if (tabName === 'heart-drawing') {
-    clearCanvas();
+    resetHeartAnimation(); // Скидаємо анімацію при відкритті вкладки
   }
 }
 
-// ==================== ПРИЧИНИ ТА ПОБАЖАННЯ ====================
 function newReason() {
   const reasonTextElement = document.getElementById("reason-text");
   reasonTextElement.innerHTML = reasons[reasonIndex % reasons.length];
@@ -316,7 +366,7 @@ function newWish() {
   document.getElementById("wish-text").innerHTML = `"${w}"`;
 }
 
-// ==================== МЕГА-СЮРПРИЗ (КОНФЕТТІ - Z-INDEX ВИПРАВЛЕНО) ====================
+// ==================== МЕГА-СЮРПРИЗ (КОНФЕТТІ) ====================
 function bigSurprise() {
   const duration = 5.5 * 1000;
   const animationEnd = Date.now() + duration;
@@ -332,14 +382,12 @@ function bigSurprise() {
 
     const particleCount = 40 * (timeLeft / duration);
     
-    // Лівий бік
     confetti(Object.assign({}, defaults, {
       particleCount,
       origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
       colors: ['#ffb3d9', '#ff6b9d', '#ffffff'] 
     }));
 
-    // Правий бік
     confetti(Object.assign({}, defaults, {
       particleCount,
       origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
@@ -347,7 +395,6 @@ function bigSurprise() {
     }));
   }, 250);
 
-  // Великий вибух по центру
   confetti({
     particleCount: 400,
     spread: 120,
@@ -356,58 +403,31 @@ function bigSurprise() {
     zIndex: 1000 
   });
 
-  // Змінюємо текст
   document.querySelector("#surprise h1").innerHTML = "ВІТАЮЮЮЮЮЮЮЮЮ!!! 🎉❤️✨";
   document.querySelector("#surprise p").innerHTML = 
     "З іменинами, моя найкраща, найніжніша, найчарівніша Вікуся!<br><br>Люблю тебе безмежно і назавжди!<br>Твій Бодька 🐱💕";
 }
 
-// ==================== МАЛЮВАННЯ СЕРДЕЧКА (ВИПРАВЛЕНО) ====================
+// ==================== АНІМАЦІЯ СЕРДЕЧКА (SVG) ====================
+const heartPath = document.querySelector('#heart-svg path');
 
-const canvas = document.getElementById('heartCanvas');
-const ctx = canvas.getContext('2d');
-const size = 400; 
-
-function clearCanvas() {
-    ctx.clearRect(0, 0, size, size);
+function resetHeartAnimation() {
+    // Скидаємо SVG до початкового стану
+    heartPath.style.animation = 'none';
+    heartPath.offsetHeight; // Викликаємо reflow для скидання
+    heartPath.style.animation = null;
+    heartPath.style.strokeDashoffset = 1000;
+    document.getElementById('heart-svg-container').classList.remove('drawing-finished');
 }
 
-function drawHeart() {
-  clearCanvas(); 
-  
-  const w = size;
-  const h = size;
-  const scale = w / 4.5;
-  
-  ctx.beginPath();
-  ctx.moveTo(w / 2, h / 4 + scale * 0.1); 
-
-  ctx.bezierCurveTo(
-    w / 2 - scale * 0.5, h / 4 - scale * 0.7, 
-    w / 2 - scale * 1.5, h / 4 + scale * 0.3, 
-    w / 2, h / 4 + scale * 1.5 
-  );
-
-  ctx.bezierCurveTo(
-    w / 2 + scale * 1.5, h / 4 + scale * 0.3, 
-    w / 2 + scale * 0.5, h / 4 - scale * 0.7, 
-    w / 2, h / 4 + scale * 0.1 
-  );
-  
-  ctx.closePath();
-  ctx.fillStyle = '#ff6b9d'; 
-  ctx.fill();
-  
-  ctx.strokeStyle = '#e30b5c';
-  ctx.lineWidth = 5;
-  ctx.stroke();
-
-  // Текст і вирівнювання
-  ctx.fillStyle = 'white';
-  ctx.font = 'bold 24px Comfortaa';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText('ДЛЯ Вікусі', w / 2, h / 2 + 10);
+function animateHeart() {
+    // Запускаємо анімацію малювання
+    heartPath.style.animation = 'drawHeart 3s ease-in-out forwards';
+    
+    // Додаємо клас після завершення (через 3 секунди), щоб показати текст
+    setTimeout(() => {
+        document.getElementById('heart-svg-container').classList.add('drawing-finished');
+    }, 3000);
 }
 
 // ==================== ПАДАЮЧІ ЕМОДЗІ (ПРИСКОРЕНО) ====================
@@ -419,7 +439,6 @@ function createFallingHeart() {
   heart.innerHTML = fallingEmojis[Math.floor(Math.random() * fallingEmojis.length)];
   
   heart.style.left = Math.random() * 100 + 'vw';
-  // Зменшив мінімальну тривалість анімації (3-7с)
   heart.style.animationDuration = Math.random() * 4 + 3 + 's'; 
   heart.style.animationDelay = Math.random() * 2 + 's';
   heart.style.fontSize = Math.random() * 30 + 30 + 'px';
@@ -429,7 +448,7 @@ function createFallingHeart() {
   setTimeout(() => heart.remove(), 10000); 
 }
 
-// Зменшив інтервал запуску з 300мс до 200мс
+// Запускаємо кожні 200мс
 setInterval(createFallingHeart, 200);
 
 // ==================== ПРИВІТАЛЬНЕ КОНФЕТТІ ====================
