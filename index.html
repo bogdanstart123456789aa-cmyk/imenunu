@@ -15,13 +15,6 @@ body{
   overflow-x:hidden;
   position:relative;
 }
-canvas{
-  position:fixed;top:0;left:0;width:100%;height:100%;
-  pointer-events:none;z-index:1;
-  opacity:0;transition:opacity 1.5s;
-}
-canvas.active{opacity:1;}
-
 .tabs{
   max-width:960px;margin:30px auto;
   background:rgba(255,255,255,0.98);
@@ -104,12 +97,12 @@ button.surprise:hover{transform:scale(1.15);}
 .music-toggle:hover{transform:scale(1.2);}
 
 /* Падаючі сердечка */
-.falling-heart {
+.falling {
   position:fixed;
-  font-size:2.5rem;
+  font-size:2.8rem;
   pointer-events:none;
   z-index:3;
-  opacity:0.8;
+  opacity:0.85;
   animation:fall linear forwards;
 }
 @keyframes fall {
@@ -118,8 +111,6 @@ button.surprise:hover{transform:scale(1.15);}
 </style>
 </head>
 <body>
-
-<canvas id="canvas"></canvas>
 
 <!-- Кнопка музики -->
 <div class="music-toggle" onclick="toggleAudio()">🔇</div>
@@ -143,9 +134,8 @@ button.surprise:hover{transform:scale(1.15);}
     <h1>З іменинами, Вікуся!</h1>
     <p class="cake">🎂🧁🎉</p>
     <p style="text-align:center;font-size:2.3rem;margin:40px 0;">
-      Зачекай 8 секунд — Бодька малює тобі величезне сердечко з котиками і ромашками… ❤️🐱🌼
+      Вітаююююю, моя найпрекрасніша дівчинка у світі! ❤️🐱✨
     </p>
-    <button class="surprise" onclick="drawHeart()">Намалювати ще раз 💗</button>
   </div>
 
   <!-- ЛИСТ -->
@@ -197,8 +187,6 @@ button.surprise:hover{transform:scale(1.15);}
   </div>
 </div>
 
-<div id="confetti"></div>
-
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 <script>
 // ==================== МУЗИКА ====================
@@ -206,16 +194,14 @@ const audio = document.getElementById('voice');
 const toggleBtn = document.querySelector('.music-toggle');
 let isPlaying = false;
 
-// Автостарт (з затримкою, щоб браузер дозволив)
 setTimeout(() => {
   audio.play().then(() => {
     isPlaying = true;
     toggleBtn.innerHTML = '🔊';
   }).catch(() => {
-    isPlaying = false;
     toggleBtn.innerHTML = '🔇';
   });
-}, 1000);
+}, 800);
 
 function toggleAudio() {
   if (isPlaying) {
@@ -234,103 +220,7 @@ function openTab(e, tabName) {
   document.querySelectorAll(".tab-links button").forEach(b => b.classList.remove("active"));
   document.getElementById(tabName).classList.add("active");
   e.currentTarget.classList.add("active");
-
-  const canvas = document.getElementById('canvas');
-  if (tabName === 'home') {
-    canvas.classList.add('active');
-    drawHeart();          // перемальовуємо сердечко при кожному поверненні
-  } else {
-    canvas.classList.remove('active');
-  }
 }
-
-// ==================== СЕРДЕЧКО НА CANVAS ====================
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
-let particles = [];
-
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-class Particle {
-  constructor(x, y, char, color) {
-    this.x = x; this.y = y;
-    this.char = char;
-    this.color = color;
-    this.size = Math.random() * 34 + 24;
-    this.targetX = x;
-    this.targetY = y;
-    this.speed = 0.07;
-  }
-  draw() {
-    ctx.font = `${this.size}px serif`;
-    ctx.fillStyle = this.color;
-    ctx.fillText(this.char, this.x, this.y);
-  }
-  update() {
-    this.x += (this.targetX - this.x) * this.speed;
-    this.y += (this.targetY - this.y) * this.speed;
-  }
-}
-
-function heartPath(t) {
-  const s = 16;
-  const x = 16 * Math.pow(Math.sin(t), 3);
-  const y = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
-  return { x: x * s + canvas.width/2, y: y * s + canvas.height/2 - 100 };
-}
-
-const emojis = ['❤️','💖','🌸','✨','🐱','🌼','🌷','💮','🎀','🥰','🌟'];
-
-function drawHeart() {
-  if (!document.getElementById('home').classList.contains('active')) return;
-
-  particles = [];
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  // саме сердечко
-  for (let t = 0; t < Math.PI * 2; t += 0.035) {
-    const pos = heartPath(t);
-    const emoji = emojis[Math.floor(Math.random() * emojis.length)];
-    const color = ['#ff6b9d','#ff99cc','#ffaaff','#ffb3d9','#ff1493'][Math.floor(Math.random()*5)];
-    const p = new Particle(Math.random()*canvas.width, Math.random()*canvas.height, emoji, color);
-    p.targetX = pos.x;
-    p.targetY = pos.y;
-    particles.push(p);
-  }
-
-  // напис «Вікуся» по колу
-  setTimeout(() => {
-    const text = "Вікуся";
-    for (let i = 0; i < text.length; i++) {
-      const angle = i / text.length * Math.PI * 2;
-      const r = 110;
-      const x = canvas.width/2 + Math.cos(angle) * r;
-      const y = canvas.height/2 - 100 + Math.sin(angle) * r;
-      const p = new Particle(x, y, text[i], '#ff1493');
-      p.targetX = x;
-      p.targetY = y;
-      p.size = 48;
-      particles.push(p);
-    }
-  }, 3800);
-}
-
-function animate() {
-  if (document.getElementById('home').classList.contains('active')) {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    particles.forEach(p => { p.update(); p.draw(); });
-  }
-  requestAnimationFrame(animate);
-}
-
-animate();
-
-window.addEventListener('resize', () => {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  drawHeart();
-});
 
 // ==================== ПРИЧИНИ ТА ПОБАЖАННЯ ====================
 const reasons = [
@@ -370,43 +260,69 @@ function newWish() {
 
 // ==================== МЕГА-СЮРПРИЗ ====================
 function bigSurprise() {
-  const duration = 5 * 1000;
-  const end = Date.now() + duration;
+  // Потужний конфетті-салют
+  const duration = 6 * 1000;
+  const animationEnd = Date.now() + duration;
+  const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 999 };
 
-  (function frame() {
-    confetti({ particleCount: 12, angle: 60, spread: 55, origin: { x: 0 } });
-    confetti({ particleCount: 12, angle: 120, spread: 55, origin: { x: 1 } });
-    if (Date.now() < end) requestAnimationFrame(frame);
-  })();
+  function randomInRange(min, max) {
+    return Math.random() * (max - min) + min;
+  }
 
-  confetti({particleCount: 400, spread: 100, origin: { y: 0.6 }});
+  const interval = setInterval(function() {
+    const timeLeft = animationEnd - Date.now();
+    if (timeLeft <= 0) return clearInterval(interval);
 
-  document.querySelector("#surprise h1").innerHTML = "ВІКУСЯ + БОДЬКА = НАЗАВЖДИ ❤️";
+    const particleCount = 50 * (timeLeft / duration);
+    confetti(Object.assign({}, defaults, {
+      particleCount,
+      origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
+    }));
+    confetti(Object.assign({}, defaults, {
+      particleCount,
+      origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
+    }));
+  }, 250);
+
+  // Великий вибух по центру
+  confetti({
+    particleCount: 400,
+    spread: 120,
+    origin: { y: 0.6 }
+  });
+
+  // Змінюємо текст
+  document.querySelector("#surprise h1").innerHTML = "ВІТАЮЮЮЮЮЮЮЮЮ!!! 🎉❤️✨";
   document.querySelector("#surprise p").innerHTML = 
-    "Я тебе дуже-дуже сильно люблю!<br>З іменинами, моя найкраща дівчинка у світі!<br><br>Твій Бодька назавжди 💕";
+    "З іменинами, моя найкраща, найніжніша, найчарівніша Вікуся!<br><br>Люблю тебе безмежно і назавжди!<br>Твій Бодька 🐱💕";
 }
 
-// ==================== ПАДАЮЧІ СЕРДЕЧКА ПО БОКАХ ====================
-const heartEmojis = ['💖','❤️','🌸','🐱','🌼','✨','🎀'];
-function createHeart(side) {
-  const h = document.createElement('div');
-  h.className = 'falling-heart';
-  h.innerHTML = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
-  h.style.left = side === 'left' 
-    ? Math.random() * 25 + 'vw' 
-    : 75 + Math.random() * 25 + 'vw';
-  h.style.animationDuration = (Math.random() * 4 + 6) + 's';
-  document.body.appendChild(h);
-  setTimeout(() => h.remove(), 10000);
+// ==================== ПАДАЮЧІ СЕРДЕЧКА (тепер точно працюють) ====================
+const hearts = ['❤️','💖','💕','💗','🌸','🐱','✨','🌼','🎀','🥰','🌷'];
+
+function createFallingHeart() {
+  const heart = document.createElement('div');
+  heart.classList.add('falling');
+  heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+  heart.style.left = Math.random() * 100 + 'vw';
+  heart.style.animationDuration = Math.random() * 4 + 5 + 's';
+  heart.style.fontSize = Math.random() * 30 + 30 + 'px';
+  document.body.appendChild(heart);
+
+  setTimeout(() => heart.remove(), 10000);
 }
 
-setInterval(() => createHeart('left'), 600);
-setInterval(() => createHeart('right'), 700);
+// Падають постійно
+setInterval(createFallingHeart, 400);
 
-// ==================== ПРИВІТАНЕ КОНФЕТТІ ====================
+// ==================== ПРИВІТАНЕ КОНФЕТТІ ПРИ ЗАВАНТАЖЕННІ ====================
 setTimeout(() => {
-  confetti({particleCount: 300, spread: 100, origin: { y: 0.6 }});
-}, 1500);
+  confetti({
+    particleCount: 300,
+    spread: 100,
+    origin: { y: 0.6 }
+  });
+}, 1200);
 </script>
 </body>
 </html>
