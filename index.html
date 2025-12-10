@@ -1,139 +1,156 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>З іменинами, Вікуся! 🐱🌸</title>
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    *{margin:0;padding:0;box-sizing:border-box;}
-    body{
-      background:linear-gradient(135deg,#fff0f8,#fff5f9,#f8e8ff,#e3f2fd);
-      font-family:'Comfortaa',cursive;
-      min-height:100vh;
-      color:#444;
-      overflow-y:auto;
-      overflow-x:hidden;
-    }
-    canvas{
-      position:fixed;top:0;left:0;width:100%;height:100%;
-      pointer-events:none;z-index:1;
-      opacity:0;transition:opacity 1.5s;
-    }
-    canvas.active{opacity:1;}
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>З іменинами, Вікуся! 🐱🌸</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:linear-gradient(135deg,#fff0f8,#fff5f9,#f8e8ff,#e3f2fd);
+  font-family:'Comfortaa',cursive;
+  min-height:100vh;
+  color:#444;
+  overflow-x:hidden;
+  position:relative;
+}
+canvas{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  pointer-events:none;z-index:1;
+  opacity:0;transition:opacity 1.5s;
+}
+canvas.active{opacity:1;}
 
-    .tabs{
-      max-width:960px;margin:30px auto;
-      background:rgba(255,255,255,0.98);
-      border-radius:35px;overflow:hidden;
-      box-shadow:0 30px 90px rgba(255,107,157,0.25);
-      position:relative;z-index:10;
-    }
-    .tab-links{
-      display:flex;flex-wrap:wrap;
-      background:linear-gradient(135deg,#ff99cc,#ff6b9d,#ff8dc7);
-    }
-    .tab-links button{
-      flex:1;padding:20px;border:none;background:none;
-      font-size:1.2rem;color:white;cursor:pointer;transition:0.3s;
-    }
-    .tab-links button:hover,.tab-links button.active{
-      background:rgba(255,255,255,0.25);transform:scale(1.05);
-    }
-    .tab-content{padding:50px 40px;min-height:70vh;display:none;animation:fade 0.9s;}
-    .tab-content.active{display:block;}
-    @keyframes fade{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:none;}}
+.tabs{
+  max-width:960px;margin:30px auto;
+  background:rgba(255,255,255,0.98);
+  border-radius:35px;overflow:hidden;
+  box-shadow:0 30px 90px rgba(255,107,157,0.25);
+  position:relative;z-index:10;
+}
+.tab-links{
+  display:flex;flex-wrap:wrap;
+  background:linear-gradient(135deg,#ff99cc,#ff6b9d,#ff8dc7);
+}
+.tab-links button{
+  flex:1;padding:20px;border:none;background:none;
+  font-size:1.2rem;color:white;cursor:pointer;transition:0.3s;
+}
+.tab-links button:hover,
+.tab-links button.active{
+  background:rgba(255,255,255,0.25);
+  transform:scale(1.05);
+}
+.tab-content{
+  padding:50px 40px;min-height:70vh;display:none;
+  animation:fade 0.9s;
+}
+.tab-content.active{display:block;}
+@keyframes fade{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:none;}}
 
-    h1{
-      font-family:'Dancing Script',cursive;font-size:5.8rem;text-align:center;
-      color:#ff6b9d;margin:30px 0;
-      text-shadow:0 0 30px rgba(255,107,157,0.5);
-      animation:glow 3s infinite alternate;
-    }
-    @keyframes glow{from{text-shadow:0 0 30px rgba(255,107,157,0.5);}to{text-shadow:0 0 45px rgba(255,107,157,0.7);}}
+h1{
+  font-family:'Dancing Script',cursive;font-size:5.8rem;text-align:center;
+  color:#ff6b9d;margin:30px 0;
+  text-shadow:0 0 30px rgba(255,107,157,0.5);
+  animation:glow 3s infinite alternate;
+}
+@keyframes glow{from{text-shadow:0 0 30px rgba(255,107,157,0.5);}to{text-shadow:0 0 45px rgba(255,107,157,0.7);}}
 
-    .cake{font-size:7rem;animation:bounce 2s infinite;text-align:center;margin:20px;}
-    @keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-20px);}}
+.cake{font-size:7rem;animation:bounce 2s infinite;text-align:center;margin:20px;}
+@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-20px);}}
 
-    .photo-grid{
-      display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:25px;margin:40px 0;
-    }
-    .photo-grid figure{
-      position:relative;overflow:hidden;border-radius:30px;
-      box-shadow:0 15px 40px rgba(255,107,157,0.3);transition:0.4s;
-    }
-    .photo-grid figure:hover{transform:scale(1.05);}
-    .photo-grid img{width:100%;border-radius:30px;display:block;}
-    .photo-grid figcaption{
-      position:absolute;bottom:0;left:0;right:0;
-      background:rgba(255,105,180,0.9);color:white;padding:20px;
-      font-size:1.3rem;text-align:center;transform:translateY(100%);transition:0.4s;
-    }
-    .photo-grid figure:hover figcaption{transform:translateY(0);}
+.photo-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:25px;margin:40px 0;
+}
+.photo-grid figure{
+  position:relative;overflow:hidden;border-radius:30px;
+  box-shadow:0 15px 40px rgba(255,107,157,0.3);transition:0.4s;
+}
+.photo-grid figure:hover{transform:scale(1.05);}
+.photo-grid img{width:100%;border-radius:30px;display:block;}
+.photo-grid figcaption{
+  position:absolute;bottom:0;left:0;right:0;
+  background:rgba(255,105,180,0.9);color:white;padding:20px;
+  font-size:1.3rem;text-align:center;transform:translateY(100%);transition:0.4s;
+}
+.photo-grid figure:hover figcaption{transform:translateY(0);}
 
-    .letter{
-      background:#fff9f5;padding:45px;border-radius:35px;
-      border:6px dashed #ffb3d9;max-width:820px;margin:40px auto;
-      line-height:2.2;font-size:1.45rem;
-    }
-    button.surprise{
-      background:#ff6b9d;color:white;border:none;padding:22px 60px;
-      font-size:1.7rem;border-radius:50px;cursor:pointer;
-      box-shadow:0 15px 45px rgba(255,107,157,0.5);transition:0.4s;
-      display:block;margin:40px auto;
-    }
-    button.surprise:hover{transform:scale(1.15);}
+.letter{
+  background:#fff9f5;padding:45px;border-radius:35px;
+  border:6px dashed #ffb3d9;max-width:820px;margin:40px auto;
+  line-height:2.2;font-size:1.45rem;
+}
+button.surprise{
+  background:#ff6b9d;color:white;border:none;padding:22px 60px;
+  font-size:1.7rem;border-radius:50px;cursor:pointer;
+  box-shadow:0 15px 45px rgba(255,107,157,0.5);transition:0.4s;
+  display:block;margin:40px auto;
+}
+button.surprise:hover{transform:scale(1.15);}
 
-    #reason-text,#wish-text{
-      font-size:2.2rem;text-align:center;min-height:120px;padding:30px;color:#ff6b9d;
-    }
+#reason-text,#wish-text{
+  font-size:2.2rem;text-align:center;min-height:120px;padding:30px;color:#ff6b9d;
+}
 
-    /* Кнопка музики */
-    .music-toggle{
-      position:fixed;bottom:30px;right:30px;
-      background:#ff6b9d;color:white;padding:18px 22px;
-      border-radius:50%;font-size:2rem;cursor:pointer;
-      box-shadow:0 10px 30px rgba(255,107,157,0.5);z-index:999;
-      transition:0.3s;
-    }
-    .music-toggle:hover{transform:scale(1.2);}
-  </style>
+/* Музична кнопка */
+.music-toggle{
+  position:fixed;bottom:30px;right:30px;
+  background:#ff6b9d;color:white;padding:18px 22px;
+  border-radius:50%;font-size:2rem;cursor:pointer;
+  box-shadow:0 10px 30px rgba(255,107,157,0.5);z-index:999;
+  transition:0.3s;
+}
+.music-toggle:hover{transform:scale(1.2);}
+
+/* Падаючі сердечка */
+.falling-heart {
+  position:fixed;
+  font-size:2.5rem;
+  pointer-events:none;
+  z-index:3;
+  opacity:0.8;
+  animation:fall linear forwards;
+}
+@keyframes fall {
+  to { transform:translateY(110vh) rotate(720deg); opacity:0; }
+}
+</style>
 </head>
 <body>
 
 <canvas id="canvas"></canvas>
 
-<!-- Кнопка вмикання/вимикання голосу -->
-<div class="music-toggle" onclick="toggleAudio()">Play Music</div>
+<!-- Кнопка музики -->
+<div class="music-toggle" onclick="toggleAudio()">🔇</div>
 
-<!-- Голосове (m4a) -->
 <audio id="voice" loop preload="auto">
   <source src="https://files.catbox.moe/uq7py8.m4a" type="audio/mp4">
 </audio>
 
 <div class="tabs">
   <div class="tab-links">
-    <button class="active" onclick="openTab(event,'home')">Головна Play Music🌸</button>
-    <button onclick="openTab(event,'letter')">Лист від Бодьки Envelope</button>
-    <button onclick="openTab(event,'photos')">Вікуся — принцеса Crown</button>
-    <button onclick="openTab(event,'reasons')">12 причин чому ти найкраща Sparkling Heart</button>
-    <button onclick="openTab(event,'wishes')">Побажання Sparkles</button>
-    <button onclick="openTab(event,'surprise')">Сюрприз Gift</button>
+    <button class="active" onclick="openTab(event,'home')">Головна 🌸</button>
+    <button onclick="openTab(event,'letter')">Лист від Бодьки ✉️</button>
+    <button onclick="openTab(event,'photos')">Вікуся — принцеса 👑</button>
+    <button onclick="openTab(event,'reasons')">12 причин ❤️</button>
+    <button onclick="openTab(event,'wishes')">Побажання ✨</button>
+    <button onclick="openTab(event,'surprise')">Сюрприз 🎁</button>
   </div>
 
   <!-- ГОЛОВНА -->
   <div id="home" class="tab-content active">
     <h1>З іменинами, Вікуся!</h1>
-    <p class="cake">Cake Cupcake Party Popper</p>
+    <p class="cake">🎂🧁🎉</p>
     <p style="text-align:center;font-size:2.3rem;margin:40px 0;">
-      Зачекай 8 секунд — Бодька малює тобі величезне сердечко з котиками і ромашками… Red Heart Cat Face Daisy
+      Зачекай 8 секунд — Бодька малює тобі величезне сердечко з котиками і ромашками… ❤️🐱🌼
     </p>
-    <button class="surprise" onclick="drawHeart()">Намалювати ще раз Heart Decoration</button>
+    <button class="surprise" onclick="drawHeart()">Намалювати ще раз 💗</button>
   </div>
 
   <!-- ЛИСТ -->
   <div id="letter" class="tab-content">
-    <h1>Лист від твого Бодьки Envelope</h1>
+    <h1>Лист від твого Бодьки ✉️</h1>
     <div class="letter">
       Вікусю, моя найрідніша!<br><br>
       З іменинами тебе, моя сонячна, найніжніша і найчарівніша дівчинка у світі!<br>
@@ -141,20 +158,20 @@
       Дякую за кожен твій сміх, за твої обійми і за те, що ти просто є.<br><br>
       Нехай твій Ангел завжди тебе береже, а я буду поруч — любити, піклуватись і робити тебе найщасливішою.<br><br>
       Люблю тебе безмежно і назавжди,<br>
-      Твій Бодька Red Heart
+      Твій Бодька ❤️
     </div>
   </div>
 
-  <!-- ФОТО — усі 6 правильні! -->
+  <!-- ФОТО -->
   <div id="photos" class="tab-content">
-    <h1>Вікуся — моя принцеса Crown</h1>
+    <h1>Вікуся — моя принцеса 👑</h1>
     <div class="photo-grid">
-      <figure><img src="https://files.catbox.moe/mdgijs.jpg"><figcaption>Тут ти така сонячна, що я закохуюсь заново Red Heart</figcaption></figure>
-      <figure><img src="https://files.catbox.moe/im74ia.jpg"><figcaption>Твоя посмішка — моє улюблене видовище</figcaption></figure>
-      <figure><img src="https://files.catbox.moe/txq7y2.jpg"><figcaption>Коли ти задумлива — ти просто нереальна</figcaption></figure>
-      <figure><img src="https://files.catbox.moe/we46j5.jpg"><figcaption>Це фото я можу дивитись вічно Sparkling Heart</figcaption></figure>
-      <figure><img src="https://files.catbox.moe/w1zmjz.jpg"><figcaption>Навіть сонна ти наймиліша на планеті</figcaption></figure>
-      <figure><img src="https://files.catbox.moe/j22ko8.jpg"><figcaption>Моя королева, моя Вікуся Red Heart</figcaption></figure>
+      <figure><img src="https://files.catbox.moe/mdgijs.jpg" alt=""><figcaption>Тут ти така сонячна, що я закохуюсь заново ❤️</figcaption></figure>
+      <figure><img src="https://files.catbox.moe/im74ia.jpg" alt=""><figcaption>Твоя посмішка — моє улюблене видовище</figcaption></figure>
+      <figure><img src="https://files.catbox.moe/txq7y2.jpg" alt=""><figcaption>Коли ти задумлива — ти просто нереальна</figcaption></figure>
+      <figure><img src="https://files.catbox.moe/we46j5.jpg" alt=""><figcaption>Це фото я можу дивитись вічно ✨</figcaption></figure>
+      <figure><img src="https://files.catbox.moe/w1zmjz.jpg" alt=""><figcaption>Навіть сонна ти наймиліша на планеті</figcaption></figure>
+      <figure><img src="https://files.catbox.moe/j22ko8.jpg" alt=""><figcaption>Моя королева, моя Вікуся ❤️</figcaption></figure>
     </div>
   </div>
 
@@ -162,21 +179,21 @@
   <div id="reasons" class="tab-content">
     <h1>12 причин чому ти найкраща на світі</h1>
     <p id="reason-text">Натисни кнопку ↓</p>
-    <button class="surprise" onclick="newReason()">Показати причину Red Heart</button>
+    <button class="surprise" onclick="newReason()">Показати причину ❤️</button>
   </div>
 
   <!-- ПОБАЖАННЯ -->
   <div id="wishes" class="tab-content">
-    <h1>Особливі побажання тільки тобі Кітік</h1>
+    <h1>Особливі побажання тільки тобі 🐱</h1>
     <p id="wish-text">Натисни кнопку ↓</p>
-    <button class="surprise" onclick="newWish()">Нове побажання Star</button>
+    <button class="surprise" onclick="newWish()">Нове побажання ⭐</button>
   </div>
 
   <!-- СЮРПРИЗ -->
   <div id="surprise" class="tab-content">
     <h1>Готова до найбільшого сюрпризу?</h1>
     <p style="text-align:center;font-size:2.3rem;margin:50px;">Закрий очі… і натискай!</p>
-    <button class="surprise" onclick="bigSurprise()">Відкрити сюрприз! Party Popper</button>
+    <button class="surprise" onclick="bigSurprise()">Відкрити сюрприз! 🎉</button>
   </div>
 </div>
 
@@ -184,152 +201,212 @@
 
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 <script>
-  const audio = document.getElementById('voice');
-  const toggleBtn = document.querySelector('.music-toggle');
-  let isPlaying = true;
+// ==================== МУЗИКА ====================
+const audio = document.getElementById('voice');
+const toggleBtn = document.querySelector('.music-toggle');
+let isPlaying = false;
 
-  // Автостарт + кнопка
-  audio.play().catch(()=>isPlaying=false);
-  function toggleAudio(){
-    if(isPlaying){
-      audio.pause();
-      toggleBtn.innerHTML = "Mute Music";
-    } else {
-      audio.play();
-      toggleBtn.innerHTML = "Play Music";
-    }
-    isPlaying = !isPlaying;
+// Автостарт (з затримкою, щоб браузер дозволив)
+setTimeout(() => {
+  audio.play().then(() => {
+    isPlaying = true;
+    toggleBtn.innerHTML = '🔊';
+  }).catch(() => {
+    isPlaying = false;
+    toggleBtn.innerHTML = '🔇';
+  });
+}, 1000);
+
+function toggleAudio() {
+  if (isPlaying) {
+    audio.pause();
+    toggleBtn.innerHTML = '🔇';
+  } else {
+    audio.play();
+    toggleBtn.innerHTML = '🔊';
   }
+  isPlaying = !isPlaying;
+}
 
-  // Вкладки + анімація тільки на home
-  function openTab(e,t){
-    document.querySelectorAll(".tab-content").forEach(c=>c.classList.remove("active"));
-    document.querySelectorAll(".tab-links button").forEach(b=>b.classList.remove("active"));
-    document.getElementById(t).classList.add("active");
-    e.currentTarget.classList.add("active");
+// ==================== ВКЛАДКИ ====================
+function openTab(e, tabName) {
+  document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+  document.querySelectorAll(".tab-links button").forEach(b => b.classList.remove("active"));
+  document.getElementById(tabName).classList.add("active");
+  e.currentTarget.classList.add("active");
 
-    const canvas = document.getElementById('canvas');
-    if(t==='home') canvas.classList.add('active');
-    else canvas.classList.remove('active');
-  }
-
-  // Анімація сердечка
   const canvas = document.getElementById('canvas');
-  const ctx = canvas.getContext('2d');
-  canvas.width = innerWidth; canvas.height = innerHeight;
-  let particles = [];
+  if (tabName === 'home') {
+    canvas.classList.add('active');
+    drawHeart();          // перемальовуємо сердечко при кожному поверненні
+  } else {
+    canvas.classList.remove('active');
+  }
+}
 
-  class Particle{
-    constructor(x,y,char,color){
-      this.x=x;this.y=y;this.char=char;this.color=color;
-      this.size=Math.random()*34+24;
-      this.targetX=x;this.targetY=y;
-      this.speed=0.07;
+// ==================== СЕРДЕЧКО НА CANVAS ====================
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+class Particle {
+  constructor(x, y, char, color) {
+    this.x = x; this.y = y;
+    this.char = char;
+    this.color = color;
+    this.size = Math.random() * 34 + 24;
+    this.targetX = x;
+    this.targetY = y;
+    this.speed = 0.07;
+  }
+  draw() {
+    ctx.font = `${this.size}px serif`;
+    ctx.fillStyle = this.color;
+    ctx.fillText(this.char, this.x, this.y);
+  }
+  update() {
+    this.x += (this.targetX - this.x) * this.speed;
+    this.y += (this.targetY - this.y) * this.speed;
+  }
+}
+
+function heartPath(t) {
+  const s = 16;
+  const x = 16 * Math.pow(Math.sin(t), 3);
+  const y = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
+  return { x: x * s + canvas.width/2, y: y * s + canvas.height/2 - 100 };
+}
+
+const emojis = ['❤️','💖','🌸','✨','🐱','🌼','🌷','💮','🎀','🥰','🌟'];
+
+function drawHeart() {
+  if (!document.getElementById('home').classList.contains('active')) return;
+
+  particles = [];
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // саме сердечко
+  for (let t = 0; t < Math.PI * 2; t += 0.035) {
+    const pos = heartPath(t);
+    const emoji = emojis[Math.floor(Math.random() * emojis.length)];
+    const color = ['#ff6b9d','#ff99cc','#ffaaff','#ffb3d9','#ff1493'][Math.floor(Math.random()*5)];
+    const p = new Particle(Math.random()*canvas.width, Math.random()*canvas.height, emoji, color);
+    p.targetX = pos.x;
+    p.targetY = pos.y;
+    particles.push(p);
+  }
+
+  // напис «Вікуся» по колу
+  setTimeout(() => {
+    const text = "Вікуся";
+    for (let i = 0; i < text.length; i++) {
+      const angle = i / text.length * Math.PI * 2;
+      const r = 110;
+      const x = canvas.width/2 + Math.cos(angle) * r;
+      const y = canvas.height/2 - 100 + Math.sin(angle) * r;
+      const p = new Particle(x, y, text[i], '#ff1493');
+      p.targetX = x;
+      p.targetY = y;
+      p.size = 48;
+      particles.push(p);
     }
-    draw(){ctx.font=this.size+'px serif';ctx.fillStyle=this.color;ctx.fillText(this.char,this.x,this.y);}
-    update(){this.x+=(this.targetX-this.x)*this.speed;this.y+=(this.targetY-this.y)*this.speed;}
+  }, 3800);
+}
+
+function animate() {
+  if (document.getElementById('home').classList.contains('active')) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => { p.update(); p.draw(); });
   }
+  requestAnimationFrame(animate);
+}
 
-  function heartPath(t){
-    const s=16;
-    const x=16*Math.pow(Math.sin(t),3);
-    const y=-(13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t));
-    return {x:x*s+canvas.width/2, y:y*s+canvas.height/2-100};
-  }
+animate();
 
-  const emojis=['Red Heart','Sparkling Heart','Pink Heart','Sparkling Heart','Cat Face','Cat Face','Daisy','Cherry Blossom','Sparkles','Smiling Face with Hearts','Flower'];
-  function drawHeart(){
-    if(!document.querySelector('#home').classList.contains('active')) return;
-    particles=[];
-    for(let t=0;t<Math.PI*2;t+=0.035){
-      const pos=heartPath(t);
-      const emoji=emojis[Math.floor(Math.random()*emojis.length)];
-      const color=['#ff6b9d','#ff99cc','#ffaaff','#ffb3d9','#ff69b4'][Math.floor(Math.random()*5)];
-      particles.push(new Particle(Math.random()*canvas.width,Math.random()*canvas.height,emoji,color));
-      particles[particles.length-1].targetX=pos.x;
-      particles[particles.length-1].targetY=pos.y;
-    }
-    setTimeout(()=>{
-      const text="Вікуся";
-      for(let i=0;i<text.length;i++){
-        const angle=i/text.length*Math.PI*2;
-        const r=110;
-        const x=canvas.width/2 + Math.cos(angle)*r;
-        const y=canvas.height/2 -100 + Math.sin(angle)*r;
-        particles.push(new Particle(x,y,text[i],'#ff1493'));
-        particles[particles.length-1].targetX=x;
-        particles[particles.length-1].targetY=y;
-      }
-    },3800);
-  }
+window.addEventListener('resize', () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  drawHeart();
+});
 
-  function animate(){
-    if(document.querySelector('#home').classList.contains('active')){
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-      particles.forEach(p=>{p.update();p.draw();});
-    }
-    requestAnimationFrame(animate);
-  }
-  drawHeart(); animate();
-  window.addEventListener('resize',()=>{canvas.width=innerWidth;canvas.height=innerHeight;drawHeart();});
+// ==================== ПРИЧИНИ ТА ПОБАЖАННЯ ====================
+const reasons = [
+  "Тому що твоя посмішка робить мій день ідеальним",
+  "Тому що ти завжди знаєш, як мене розсмішити",
+  "Тому що ти найніжніша і найтурботливіша",
+  "Тому що з тобою я найщасливіший",
+  "Тому що твої очі — мій улюблений колір",
+  "Тому що ти хмуриш носик наймиліше у світі",
+  "Тому що ти робиш звичайні моменти магічними",
+  "Тому що ти смачно готуєш (і навіть коли ні — я все одно люблю)",
+  "Тому що ти моя найкраща подруга і кохана",
+  "Тому що ти просто Вікуся — і цього достатньо",
+  "Тому що я пишаюсь тобою кожну секунду",
+  "Тому що люблю тебе більше за все на світі ❤️"
+];
+let ri = 0;
+function newReason() {
+  document.getElementById("reason-text").innerHTML = reasons[ri % reasons.length];
+  ri++;
+}
 
-  // Причини, побажання
-  const reasons=["Тому що твоя посмішка робить мій день ідеальним","Тому що ти завжди знаєш, як мене розсмішити","Тому що ти найніжніша і найтурботливіша","Тому що з тобою я найщасливіший","Тому що твої очі — мій улюблений колір","Тому що ти хмуриш носик наймиліше у світі","Тому що ти робиш звичайні моменти магічними","Тому що ти смачно готуєш (і навіть коли ні — я все одно люблю)","Тому що ти моя найкраща подруга і кохана","Тому що ти просто Вікуся — і цього достатньо","Тому що я пишаюсь тобою кожну секунду","Тому що люблю тебе більше за все на світі Red Heart"];
-  let ri=0;
-  function newReason(){document.getElementById("reason-text").innerHTML=reasons[ri%reasons.length];ri++;}
+const wishes = [
+  "Щоб ти завжди прокидалась з посмішкою",
+  "Нехай твої улюблені солодощі ніколи не закінчуються",
+  "Щоб ти завжди чула «ти сьогодні нереально гарна»",
+  "Щоб у тебе завжди був ідеальний манікюр і настрій",
+  "Нехай кожне твоє селфі набирає мільйон лайків",
+  "Щоб ти ніколи не мерзла (бо я грітиму)",
+  "Нехай кожен день буде маленьким святом",
+  "Назавжди твоя любов і підтримка — Бодька ❤️"
+];
+function newWish() {
+  const w = wishes[Math.floor(Math.random() * wishes.length)];
+  document.getElementById("wish-text").innerHTML = `"${w}"`;
+}
 
-  const wishes=["Щоб ти завжди прокидалась з посмішкою","Нехай твої улюблені солодощі ніколи не закінчуються","Щоб ти завжди чула «ти сьогодні нереально гарна»","Щоб у тебе завжди був ідеальний манікюр і настрій","Нехай кожне твоє селфі набирає мільйон лайків","Щоб ти ніколи не мерзла (бо я грітиму)","Нехай кожен день буде маленьким святом","Назавжди твоя любов і підтримка — Бодька Red Heart"];
-  function newWish(){const w=wishes[Math.floor(Math.random()*wishes.length)];document.getElementById("wish-text").innerHTML=`"${w}"`;}
+// ==================== МЕГА-СЮРПРИЗ ====================
+function bigSurprise() {
+  const duration = 5 * 1000;
+  const end = Date.now() + duration;
 
-  // МЕГА-САЛЮТ
-  function bigSurprise(){
-    const duration = 4 * 1000;
-    const end = Date.now() + duration;
+  (function frame() {
+    confetti({ particleCount: 12, angle: 60, spread: 55, origin: { x: 0 } });
+    confetti({ particleCount: 12, angle: 120, spread: 55, origin: { x: 1 } });
+    if (Date.now() < end) requestAnimationFrame(frame);
+  })();
 
-    (function frame() {
-      confetti({
-        particleCount: 8,
-        angle: 60,
-        spread: 55,
-        origin: { x: 0 }
-      });
-      confetti({
-        particleCount: 8,
-        angle: 120,
-        spread: 55,
-        origin: { x: 1 }
-      });
+  confetti({particleCount: 400, spread: 100, origin: { y: 0.6 }});
 
-      if (Date.now() < end) {
-        requestAnimationFrame(frame);
-      }
-    }());
+  document.querySelector("#surprise h1").innerHTML = "ВІКУСЯ + БОДЬКА = НАЗАВЖДИ ❤️";
+  document.querySelector("#surprise p").innerHTML = 
+    "Я тебе дуже-дуже сильно люблю!<br>З іменинами, моя найкраща дівчинка у світі!<br><br>Твій Бодька назавжди 💕";
+}
 
-    confetti({particleCount:300,spread:100,origin:{y:0.6}});
-    document.querySelector("#surprise h1").innerHTML="ВІКУСЯ + БОДЬКА = НАЗАВЖДИ Red Heart";
-    document.querySelector("#surprise p").innerHTML="Я тебе дуже-дуже сильно люблю!<br>З іменинами, моя найкраща дівчинка у світі!<br>Твій Бодька назавжди";
-  }
+// ==================== ПАДАЮЧІ СЕРДЕЧКА ПО БОКАХ ====================
+const heartEmojis = ['💖','❤️','🌸','🐱','🌼','✨','🎀'];
+function createHeart(side) {
+  const h = document.createElement('div');
+  h.className = 'falling-heart';
+  h.innerHTML = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+  h.style.left = side === 'left' 
+    ? Math.random() * 25 + 'vw' 
+    : 75 + Math.random() * 25 + 'vw';
+  h.style.animationDuration = (Math.random() * 4 + 6) + 's';
+  document.body.appendChild(h);
+  setTimeout(() => h.remove(), 10000);
+}
 
-  // Сердечка по боках
-  function createHeart(s){
-    const h=document.createElement('div');
-    h.innerHTML=['Sparkling Heart','Red Heart','Pink Heart','Cherry Blossom','Cat Face','Daisy','Paw Prints'][Math.floor(Math.random()*7)];
-    h.style.position='fixed';h.style.fontSize=Math.random()*30+22+'px';h.style.opacity=0.7;
-    h.style.pointerEvents='none';h.style.zIndex='3';
-    h.style[s==='left'?'left':'right']=Math.random()*12+'vw';
-    h.style.top='-50px';h.style.animation='fall 8s linear forwards';
-    document.body.appendChild(h);
-    setTimeout(()=>h.remove(),8000);
-  }
-  setInterval(()=>createHeart('left'),500);
-  setInterval(()=>createHeart('right'),550);
+setInterval(() => createHeart('left'), 600);
+setInterval(() => createHeart('right'), 700);
 
-  const style=document.createElement('style');
-  style.innerHTML=`@keyframes fall{to{transform:translateY(105vh) rotate(360deg);}}`;
-  document.head.appendChild(style);
-
-  // Привітальне конфетті
-  setTimeout(()=>confetti({particleCount:250,spread:100}),1500);
+// ==================== ПРИВІТАНЕ КОНФЕТТІ ====================
+setTimeout(() => {
+  confetti({particleCount: 300, spread: 100, origin: { y: 0.6 }});
+}, 1500);
 </script>
 </body>
 </html>
